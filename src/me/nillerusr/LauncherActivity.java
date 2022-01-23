@@ -135,15 +135,18 @@ public class LauncherActivity extends Activity {
 		changeButtonsStyle((ViewGroup)this.getWindow().getDecorView());
 	}
 
+	public void saveSettings(SharedPreferences.Editor editor)
+	{
+		String argv = cmdArgs.getText().toString();
+		editor.putString("argv", argv);
+		editor.commit();
+	}
+
 	private Intent prepareIntent(Intent i)
 	{
 		String argv = cmdArgs.getText().toString();
 		i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-		SharedPreferences.Editor editor = mPref.edit();
-
-		editor.putString("argv", argv);
-		editor.commit();
+		saveSettings(mPref.edit());
 
 		if(argv.length() != 0)
 			i.putExtra("argv", argv);
@@ -173,5 +176,11 @@ public class LauncherActivity extends Activity {
 		catch(Exception e){}
 
 		new AlertDialog.Builder(this).setTitle("Warning").setMessage("Please install Source Engine").setPositiveButton(R.string.srceng_launcher_ok, (DialogInterface.OnClickListener) null).show();
+	}
+
+	public void onPause()
+	{
+		saveSettings(mPref.edit());
+		super.onPause();
 	}
 }
