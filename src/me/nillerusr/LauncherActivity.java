@@ -1,6 +1,6 @@
 package me.nillerusr;
 
-import com.valvesoftware.source.bruh.R;
+import com.valvesoftware.source.mod.R;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -33,7 +33,7 @@ import me.nillerusr.ExtractAssets;
 import android.content.ComponentName;
 
 public class LauncherActivity extends Activity {
-	public static String MOD_NAME = "hl1"; // Change mod name here!
+	public static String MOD_NAME = "hl2"; // Change mod name here!
 
 	public static String PKG_NAME;
 	public static boolean can_write = true;
@@ -42,7 +42,6 @@ public class LauncherActivity extends Activity {
 	public static final int sdk = Integer.valueOf(Build.VERSION.SDK).intValue();
 
 	static LinearLayout res_layout;
-
 
 	public static void changeButtonsStyle( ViewGroup parent )
 	{

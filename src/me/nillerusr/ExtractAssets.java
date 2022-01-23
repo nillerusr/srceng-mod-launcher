@@ -13,7 +13,7 @@ public class ExtractAssets
 	public static String TAG = "ExtractAssets";
 	static SharedPreferences mPref;
 
-	public static final String VPK_NAME = "extras_dir.vpk";
+	public static final String VPK_NAME = "";
 	public static int PAK_VERSION = 1;
 
     private static int chmod(String path, int mode)
@@ -48,6 +48,9 @@ public class ExtractAssets
 
 	public static void extractVPK(Context context, Boolean force) 
 	{
+		if( VPK_NAME.isEmpty() )
+			return;
+
 		ApplicationInfo appinf = context.getApplicationInfo();
 
 		FileOutputStream os = null;
