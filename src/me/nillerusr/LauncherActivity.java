@@ -1,6 +1,6 @@
 package me.nillerusr;
 
-import com.valvesoftware.source.mod.R;
+import com.valvesoftware.source.MOD_REPLACE_ME.R;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -31,9 +31,10 @@ import android.widget.LinearLayout.LayoutParams;
 import android.graphics.drawable.*;
 import me.nillerusr.ExtractAssets;
 import android.content.ComponentName;
+import android.content.ClipboardManager;
 
 public class LauncherActivity extends Activity {
-	public static String MOD_NAME = "hl2"; // Change mod name here!
+	public static String MOD_NAME = "MOD_REPLACE_ME"; // Change mod name here!
 
 	public static String PKG_NAME;
 	public static boolean can_write = true;
@@ -123,6 +124,7 @@ public class LauncherActivity extends Activity {
 				TextView text = new TextView(LauncherActivity.this);
 				text.setText(R.string.srceng_launcher_about_text);
 				text.setLinksClickable(true);
+				text.setTextIsSelectable(true);
 				Linkify.addLinks(text, Linkify.WEB_URLS|Linkify.EMAIL_ADDRESSES);
 				scroll.addView(text);
 				dialog.setContentView(scroll);

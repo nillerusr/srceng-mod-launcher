@@ -13,11 +13,11 @@ public class ExtractAssets
 	public static String TAG = "ExtractAssets";
 	static SharedPreferences mPref;
 
-	public static final String VPK_NAME = "";
-	public static int PAK_VERSION = 1;
+	public static final String VPK_NAME = "PACK_NAME";
+	public static int PAK_VERSION = 1337;
 
-    private static int chmod(String path, int mode)
-    {
+	private static int chmod(String path, int mode)
+	{
 		int ret = -1;
 
 		try
@@ -48,7 +48,7 @@ public class ExtractAssets
 
 	public static void extractVPK(Context context, Boolean force) 
 	{
-		if( VPK_NAME.isEmpty() )
+		if( VPK_NAME.isEmpty() || !VPK_NAME.contains(".vpk") )
 			return;
 
 		ApplicationInfo appinf = context.getApplicationInfo();
@@ -57,6 +57,10 @@ public class ExtractAssets
 		try {
 			if( mPref == null )
 				mPref = context.getSharedPreferences("mod", 0);
+
+			File file = new File( context.getFilesDir().getPath() +"/"+ VPK_NAME );
+			if(file.exists())
+				force = true;
 
 			if( mPref.getInt( "pakversion", 0 ) == PAK_VERSION && !force )
 				return;
