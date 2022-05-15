@@ -41,6 +41,7 @@ public class LauncherActivity extends Activity {
 	static EditText cmdArgs;
 	public static SharedPreferences mPref;
 	public static final int sdk = Integer.valueOf(Build.VERSION.SDK).intValue();
+	public Spinner spin;
 
 	static LinearLayout res_layout;
 
@@ -132,6 +133,25 @@ public class LauncherActivity extends Activity {
 			}
 		});
 
+		if( MOD_NAME.equals("episodic") )
+		{
+			spin = (Spinner)findViewById(R.id.spinner_games);
+			spin.setVisibility(View.VISIBLE);
+
+			ArrayList<String> spinnerArray = new ArrayList<String>();
+			spinnerArray.add("Half-Life 2 Episode 1");
+			spinnerArray.add("Half-Life 2 Episode 2");
+
+			ArrayAdapter<String> spinnerArrayAdapter;
+
+			if( sdk >= 21 )
+				spinnerArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, spinnerArray);
+			else
+				spinnerArrayAdapter = new ArrayAdapter<String>(this, R.layout.spinner_item_v8, spinnerArray);
+
+			spin.setAdapter(spinnerArrayAdapter);
+		}
+
 		cmdArgs.setText(mPref.getString("argv", "-console"));
 
 		changeButtonsStyle((ViewGroup)this.getWindow().getDecorView());
@@ -153,7 +173,16 @@ public class LauncherActivity extends Activity {
 		if(argv.length() != 0)
 			i.putExtra("argv", argv);
 
-		i.putExtra("gamedir", MOD_NAME );
+		if( MOD_NAME.equals("episodic") )
+		{
+			if( spin.getSelectedItemPosition() == 0 )
+				i.putExtra("gamedir", "episodic" );
+			else
+				i.putExtra("gamedir", "ep2" );
+		}
+		else
+			i.putExtra("gamedir", MOD_NAME );
+
 		i.putExtra("gamelibdir", getApplicationInfo().nativeLibraryDir);
 		i.putExtra("vpk", getFilesDir().getPath() +"/"+ ExtractAssets.VPK_NAME);
 

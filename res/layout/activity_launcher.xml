@@ -104,6 +104,16 @@
 							android:layout_marginTop="5dp"
 							android:layout_marginBottom="5dp"
 							android:backgroundTint="@color/hl_color"/>
+						<Spinner
+							android:id="@+id/spinner_games"
+							android:layout_marginLeft="3dp"
+							android:layout_marginRight="3dp"
+							android:layout_marginTop="5dp"
+							android:layout_marginBottom="5dp"
+							android:popupBackground="#FF333333"
+							android:layout_width="match_parent"
+							android:visibility="gone"
+							android:layout_height="wrap_content" />
 					</LinearLayout>
 				</ScrollView>
 			</LinearLayout>
