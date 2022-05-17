@@ -150,6 +150,7 @@ public class LauncherActivity extends Activity {
 				spinnerArrayAdapter = new ArrayAdapter<String>(this, R.layout.spinner_item_v8, spinnerArray);
 
 			spin.setAdapter(spinnerArrayAdapter);
+			spin.setSelection(mPref.getInt("episode", 0));
 		}
 
 		cmdArgs.setText(mPref.getString("argv", "-console"));
@@ -160,6 +161,7 @@ public class LauncherActivity extends Activity {
 	public void saveSettings(SharedPreferences.Editor editor)
 	{
 		String argv = cmdArgs.getText().toString();
+		editor.putInt("episode", spin.getSelectedItemPosition());
 		editor.putString("argv", argv);
 		editor.commit();
 	}
