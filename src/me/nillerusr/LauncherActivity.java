@@ -161,7 +161,10 @@ public class LauncherActivity extends Activity {
 	public void saveSettings(SharedPreferences.Editor editor)
 	{
 		String argv = cmdArgs.getText().toString();
-		editor.putInt("episode", spin.getSelectedItemPosition());
+
+		if( MOD_NAME.equals("episodic") )
+			editor.putInt("episode", spin.getSelectedItemPosition());
+
 		editor.putString("argv", argv);
 		editor.commit();
 	}
