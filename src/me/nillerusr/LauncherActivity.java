@@ -199,7 +199,7 @@ public class LauncherActivity extends Activity {
 		SharedPreferences.Editor editor = mPref.edit();
 		editor.putString("argv", argv);
 
-		ExtractAssets.extractVPK(this, false);
+		ExtractAssets.extractAssets(this);
 
 		try
 		{

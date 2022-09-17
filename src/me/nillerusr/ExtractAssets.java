@@ -7,6 +7,8 @@ import java.lang.reflect.Method;
 import android.util.Log;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
+import android.content.res.AssetManager;
+
 
 public class ExtractAssets
 {
@@ -44,6 +46,70 @@ public class ExtractAssets
 		}
 
 		return ret;
+	}
+
+	public static void extractAsset(Context context, String asset, Boolean force)
+	{
+		AssetManager am = context.getAssets();
+
+		try
+		{
+			File asset_file = new File(context.getFilesDir().getPath() +"/"+ asset);
+
+			Boolean asset_exists = asset_file.exists();
+			if( !force && asset_exists )
+				return;
+
+			FileOutputStream os = null;
+			InputStream is = am.open(asset);
+			os = new FileOutputStream(context.getFilesDir().getPath() +"/tmp");
+			byte[] buffer = new byte[8192];
+			while (true)
+			{
+				int length = is.read(buffer);
+				if (length <= 0)
+					break;
+
+				os.write(buffer, 0, length);
+			}
+
+			os.close();
+
+			File tmp = new File( context.getFilesDir().getPath() + "/tmp" );
+
+			if( asset_exists )
+				asset_file.delete();
+
+			tmp.renameTo(new File( context.getFilesDir().getPath() +"/"+ asset));
+		}
+		catch (Exception e)
+		{
+			Log.e("SRCAPK", "Failed to extract vpk:" + e.toString());
+		}
+
+		chmod(context.getFilesDir().getPath() +"/"+ asset, 0777);
+	}
+
+	public static void extractAssets(Context context)
+	{
+		ApplicationInfo appinf = context.getApplicationInfo();
+		chmod(appinf.dataDir, 0777);
+		chmod(context.getFilesDir().getPath(), 0777);
+
+		extractVPK(context);
+	}
+
+	public static void extractVPK(Context context)
+	{
+		if( mPref == null )
+			mPref = context.getSharedPreferences("mod", 0);
+
+		Boolean force = mPref.getInt( "pakversion", 0 ) != PAK_VERSION;
+		extractAsset( context, VPK_NAME, force );
+
+		SharedPreferences.Editor editor = mPref.edit();
+		editor.putInt( "pakversion", PAK_VERSION );
+		editor.commit();
 	}
 
 	public static void extractVPK(Context context, Boolean force) 
