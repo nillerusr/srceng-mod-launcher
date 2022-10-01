@@ -58,7 +58,11 @@ public class ExtractAssets
 
 			Boolean asset_exists = asset_file.exists();
 			if( !force && asset_exists )
+			{
+				// chmod is needed here because newer android may reset file permissions
+				chmod(context.getFilesDir().getPath() +"/"+ asset, 0777);
 				return;
+			}
 
 			FileOutputStream os = null;
 			InputStream is = am.open(asset);
@@ -110,48 +114,5 @@ public class ExtractAssets
 		SharedPreferences.Editor editor = mPref.edit();
 		editor.putInt( "pakversion", PAK_VERSION );
 		editor.commit();
-	}
-
-	public static void extractVPK(Context context, Boolean force) 
-	{
-		if( VPK_NAME.isEmpty() || !VPK_NAME.contains(".vpk") )
-			return;
-
-		ApplicationInfo appinf = context.getApplicationInfo();
-
-		FileOutputStream os = null;
-		try {
-			if( mPref == null )
-				mPref = context.getSharedPreferences("mod", 0);
-
-			File file = new File( context.getFilesDir().getPath() +"/"+ VPK_NAME );
-			if(file.exists())
-				force = true;
-
-			if( mPref.getInt( "pakversion", 0 ) == PAK_VERSION && !force )
-				return;
-
-			InputStream is = context.getAssets().open(VPK_NAME);
-			os = new FileOutputStream( context.getFilesDir().getPath() +"/"+ VPK_NAME);
-			byte[] buffer = new byte[8192];
-			while (true) {
-				int length = is.read(buffer);
-				if (length <= 0)
-					break;
-
-				os.write(buffer, 0, length);
-			}
-
-			SharedPreferences.Editor editor = mPref.edit();
-			editor.putInt( "pakversion", PAK_VERSION );
-			editor.commit();
-
-			chmod(appinf.dataDir, 0777);
-			chmod(context.getFilesDir().getPath(), 0777);
-			chmod(context.getFilesDir().getPath() +"/"+ VPK_NAME, 0777);
-		}
-		catch (Exception e) {
-			Log.e("SRCAPK", "Failed to extract vpk:" + e.toString());
-		}
 	}
 }
