@@ -153,7 +153,7 @@ public class LauncherActivity extends Activity {
 			spin.setSelection(mPref.getInt("episode", 0));
 		}
 
-		cmdArgs.setText(mPref.getString("argv", "-console"));
+		cmdArgs.setText(mPref.getString("argv", "-nobackgroundlevel"));
 
 		changeButtonsStyle((ViewGroup)this.getWindow().getDecorView());
 	}

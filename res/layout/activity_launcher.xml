@@ -98,7 +98,7 @@
 							android:layout_height="wrap_content"
 							android:maxLines="1"
 							android:inputType="text"
-							android:text="-console"
+							android:text="-nobackgroundlevel"
 							android:layout_marginLeft="3dp"
 							android:layout_marginRight="3dp"
 							android:layout_marginTop="5dp"
